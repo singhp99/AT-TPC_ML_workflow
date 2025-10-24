@@ -1,0 +1,279 @@
+def download_files():
+"""
+Function to move files from globus experiment collection to the hpcc  
+Input: None
+Return: None
+"""
+    for (len(all_runs))
+        dir_from = "path from globus"
+        dir_to = "path to hpcc"
+
+
+#assuming that I already git cloned the attpc_spyral repository and followed installation steps from attpc.github.io
+
+#Not a function but I need to run a bash script to activate the virtual environment on the hpcc 
+    - set up right Python module (>3.10 and <3.13)
+        module purge 
+        module load Python/3.12.3-GCCcore-13.3.0
+
+    - activate virtual environment 
+        source .venv/bin/activate (.venv that has attpc_spyral==0.12 installed)
+
+    #Next need to modify run_spyral.py (assuming I have the Spyral ATTPC github repository) for this experiment. 95% of these changes only need to be made once, as it includes directory/file paths. 
+    Analysis files are written to PointCloud, Cluster, and Estimation directories in analysis path described in the run_spyral file earlier. 
+
+        - then run the file run_spyral.py
+            python run_spyral.py
+                for all runs(run_min, run_max) divided by set number of processes to run in parallel 
+                
+    Output: .h5 (Phase 1), .h5 (Phase 2), .parquet (Phase 3)
+
+#After all three phases run for all run
+
+def convert_parquet_to_h5(.parquet files):
+"""
+Function to convert label files from .parquet to.h5 
+Input: .parquet files
+Return: converted .h5 files
+"""
+            #code to convert the parquet files to .h5 files (need to make sure the keys of file have same prefix as phase 1 files "cloud_<event_number>")
+            return converted .h5 files
+
+def class_distribution(converted .h5): #can definetly make this more efficient, but this is how I do it now
+"""
+Function to get a distribution of labels in a run
+Input: converted .h5 files
+Return: list of numbers in each class
+"""
+        #to look at the label distribution 
+        for key in converted .h5:
+            if label == 1:
+                counter1+=1
+            elif label == 2:
+                counter2+=1
+            elif label == 3:
+                counter3+=1:
+            elif label == 4:
+                counter4+=1
+            elif label == 5:
+                counter5+=1
+        reuturn [counter1,counter2,counter3,counter4,counter5]           
+
+# Only need this if I want to visualize events 
+
+visualize = input("Do you want to visualize events? [y/n]: )
+
+if visualize == 'y':
+    
+    try: 
+        class_of_intrest = input(Which class do you want to visualize? [0,1,2,3,4]: )
+        
+        number_of_events = input(How many events do you want to look at?: )
+
+    except ValueError:
+        print("Not a integer. Try again.)
+        class_of_intrest = input(Which class do you want to visualize? [0,1,2,3,4]: )
+
+         number_of_events = input(How many events do you want to look at?: )
+        
+    def visualize_pc(converted .h5, point_clouds.h5,class_of_intrest,number_of_events):
+    """
+    Function to visualize point clouds 
+    Input: converted .h5, point_clouds.h5,class_of_intrest,number_of_events
+    Return: None
+    """
+                    #sometimes I have want to visualize certain classes to see what the data looks like
+                    save in a pdf:
+                        for key in converted.h5:
+                            if counter == number_of_events: #there are thousands of events, I can set a number of how many events I want to look at
+                                break
+
+                            if label == class of intrest:
+                                x = point_cloud_x
+                                y = point_cloud_y
+                                z = point_cloud_z
+
+                                plt.3D(x,y,z)
+
+                            save to pdf 
+
+                            counter +=1
+                    return None
+
+elif visualize == "n":
+    continue 
+
+else: 
+    print("Not an option. Run again")
+
+def conversion_n_comine_npy(converted .h5 files, point_clouds.h5):
+    """
+    Function to convert and combine features and label together and get lengths of point clouds 
+    Input: converted .h5 files, point_clouds.h5
+    Return: event_length file .npy, data .npy files
+    """
+        #loop through the point_cloud_file and save event event's length
+        event_lengths_array = make array with the length of the converted.h5 file
+        for index, key in converted.h5:
+            event_lengths_array[index] = length of key from point_cloud
+
+        #make an array for saving point could data and labels
+        data_array = [len(converted.h5),max(event_length)+2,4] #there are four properties for each data point x,y,z,charge
+
+        #loop through the converted.h5:
+        for index, key in converted.h5:
+            data_array[index] = point_cloud.h5[key]
+            data_array[index,:,-2] = index #second to last index for the "event_id" of place in the array (could be useful for when we shuffle data later)
+            data_array[index,:,-1] = label #assigning the label to the last index
+
+        return event_length file .npy, data .npy files 
+
+
+#Machine learning preprocessing pipeline
+class OutlierDetection:
+"""
+Function to remove all outliers defined by the physical lengths of the detector
+Input: (event_lengths, data)
+Return: no_outlier_array, event_lengths_array
+"""
+
+    def transform(data_array,event_lengths_array):
+        # remove any outlier points outside the physical bounds of the detector
+        return no_outlier_array, event_lengths_array
+
+class UpDownScaling():
+"""
+Function to resample all data to a target value 
+Input: no_outlier_array, event_lengths_array
+Return: new_data 
+"""
+    def transform(no_outlier_array, event_lengths_array,target_size)
+        #need to make all events the same number of points (the chosen target_size) (right now it's dynamic)
+
+        for index in no_outlier_array:
+            if event_length[index] < target_size:
+                #code for upscale
+                new_data[index] = upscaled no_outlier_array[index]
+            elif event_length[index] > target_size:
+                #code for downscale
+                new_data[index] = downscaled no_outlier_array[index]
+
+
+        return new_data 
+
+class ReclassifyingLabels():
+"""
+Function to subtract 1 from labels to start from 0
+Input: new_data 
+Return: labels_changed
+"""
+    def trasform(new_data):
+        #code to subtract one from all labels because classification model start labels from 0
+
+    return labels_changed
+
+
+class Scaling():
+"""
+Function to scale all features from -1 to 1
+Input: labels_changed
+Return:  scaled_array
+"""
+    def transform(labels_changed):
+        #MinMaxScaler applied for scaling on all properties so all values are between (-1,1)
+
+        return scaled_array
+
+
+def splitting(all_data):
+"""
+Function to the data into features and labels into train, val and test sets (60-20-20)
+Input: scaled_array
+Return: 6 features and labels files
+"""
+    #splitting the array into train,val,test sometimes
+    #saving the sets and labels seprately (total 6 files saved)
+
+    reuturn 6 features and labels files
+
+
+
+def repeating_run_loop(run_list):
+"""
+Function to the run the ml-preprocessing piepeline and combine all data together 
+Input: run_list
+Return: train_fea,train_label,val_fea,val_lab,test_fea,test_lb 
+"""
+        #loop through each run
+        all data = empty array
+        for run in run_list:
+            obejct = Convert_phase3_files()
+            object.convert_parquet_to_h5({run}.parquet file for for this run)
+            object.class_distribution({run}converted .h5) #only if I want to run this
+            visualize_pc({run}converted .h5, {run}point_clouds.h5,class_of_intrest,number_of_events) #only if I wan to run this
+
+            conversion_n_comine_npy({run}converted .h5 files, point_clouds.h5)
+
+
+            #call all ml preprocessing classes in a pipeline
+            OutlierDetection
+            UpDownScaling()
+            ReclassifyingLabels()
+            Scaling()
+
+            #concatenate all the runs together into a an array
+            all_data = concatenate(each iteration)
+
+        train_fea,train_label,val_fea,val_lab,test_fea,test_lb = splitting(all_data)
+
+        return train_fea,train_label,val_fea,val_lab,test_fea,test_lb 
+
+
+def hyperparameter_tuning(train_fea,train_label,val_fea,val_lab,batch_size,learning_rate):
+"""
+Function to traiin learning rate and batch_size options combinations  
+Input: train_fea,train_label,val_fea,val_lab,batch_size,learning_rate
+Return: best_val_accuracy
+"""
+    #training model for each batch_size and learning rate pair
+    return best_val_accuracy
+
+def run_hyperparameter_tuning(train_fea,train_label,val_fea,val_lab):
+"""
+Function to set learning rate and batch_size options
+Input: train_fea,train_label,val_fea,val_lab
+Return: opt_parameters
+"""
+    bath_size_list = with batch size options 
+    results = accuracies from each iteration
+    learning_rate_list = with learning rate options 
+    for batch, lr in (batch_size_list, learning_rate_list) pair:
+        results = hyperparameter_tuning(train_fea,train_label,val_fea,val_lab,batch_size,learning_rate) #saves accuracies for each pair
+
+    return opt_parameters #best batch size and learning rate parameters
+
+
+def train_model(train_fea,train_label,val_fea,val_lab):
+"""
+Function to train the model with the best validation accuracy  
+Input: train_fea,train_label,val_fea,val_lab
+Return: best_model.keras
+"""
+    batch_size, learning_rate = run_hyperparameter_tuning(train_fea,train_label,val_fea,val_lab)
+
+    return best_model.keras
+
+
+def performance_metrics(test_fea,test_lb):
+"""
+Function to load best model and evaluate model performance on test data 
+Input: test_fea,test_lb
+Return: None 
+"""
+    model = train_model(train_fea,train_label,val_fea,val_lab) #loads model weights
+    #prints a classification report 
+    save_confusion_matrix.png
+    print(classification_report or any kind of performance metrics)
+    return None 
+
+
