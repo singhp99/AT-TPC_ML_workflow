@@ -69,6 +69,8 @@ class Filter:
 
         Args:
             group (HDF5 group object): The first group of the HDF5 file.
+        Returns:
+            None
         """
         attribute = "tracks" #attribute corresponding to the number of tracks
         
