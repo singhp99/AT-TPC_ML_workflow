@@ -1,0 +1,15 @@
+site_name: AT-TPC ML Workflow
+nav:
+  - Home: index.md
+  - API Reference:
+    - Inspect: inspect.md
+theme:
+  name: material
+  palette:
+    scheme: slate 
+    primary: pink
+    accent: default
+
+plugins: 
+- search
+- mkdocstrings
