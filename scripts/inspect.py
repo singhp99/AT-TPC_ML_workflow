@@ -3,9 +3,10 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 
 
-class Filter:
+class Inspect:
     
     def __init__(self, number_to_viz: int, num_tracks: int):
         self.number_to_viz = number_to_viz
@@ -76,35 +77,39 @@ class Filter:
         
         counter = 0 #counter to limit the number of visualizations
         
-        for key in enumerate(group, desc="Visualizing clusters"):
-            if attribute in group[key].attrs:
-                
-                num_tracks = group[key].attrs[attribute]
-                
-                if num_tracks == self.num_tracks and counter < self.number_to_viz:
-                    fig = plt.figure()
-                    ax = fig.add_subplot(111, projection='3d')
+        with PdfPages(f"/Users/pranjalsingh/Desktop/research_space_spyral/AT-TPC_ML_workflow/plots/visualising_{self.num_tracks}_tracks") as pdf:
+            for key in enumerate(group, desc="Visualizing clusters"):
+                if attribute in group[key].attrs:
                     
-                    x = group[key][:, 0]
-                    y = group[key][:, 1]
-                    z = group[key][:, 2]
-                    charge = group[key][:, 3]
+                    num_tracks = group[key].attrs[attribute]
                     
-                    ax.scatter(x/250, y/250, (z-500)/500, marker='o', s=10)
-                    ax.set_xlabel('X')
-                    ax.set_ylabel('Y')
-                    ax.set_zlabel('Z')
-                    ax.set_ylim(-1,1)
-                    ax.set_xlim(-1,1)
-                    ax.set_zlim(-1,1)
-                    ax.set_title(f'Event {key}')
-                    
-                    ax.text2D(0.05, 0.95, f'Estimator Data: {num_tracks}', transform=ax.transAxes, color='red')
-                    
-                    plt.show()
-                    
-                    counter += 1
-                
+                    if num_tracks == self.num_tracks and counter < self.number_to_viz:
+                        fig = plt.figure()
+                        ax = fig.add_subplot(111, projection='3d')
+                        
+                        x = group[key][:, 0]
+                        y = group[key][:, 1]
+                        z = group[key][:, 2]
+                        charge = group[key][:, 3]
+                        
+                        ax.scatter(x/250, y/250, (z-500)/500, marker='o', s=10)
+                        ax.set_xlabel('X')
+                        ax.set_ylabel('Y')
+                        ax.set_zlabel('Z')
+                        ax.set_ylim(-1,1)
+                        ax.set_xlim(-1,1)
+                        ax.set_zlim(-1,1)
+                        ax.set_title(f'Event {key}')
+                        
+                        ax.text2D(0.05, 0.95, f'Estimator Data: {num_tracks}', transform=ax.transAxes, color='red')
+                        
+                        pdf.savefig(fig)
+                        plt.close(fig)
+                        
+            
+                        counter += 1 # Increment counter
+        
+        
                 
             
             
