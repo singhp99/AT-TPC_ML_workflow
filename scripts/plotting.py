@@ -11,6 +11,9 @@ def plot_learning_curve(history, filename: str,batch_size: int,learning_rate: in
         filename (str): path for saving the learning curve
         batch_size (int): batch size
         learning_rate (int): learning rate
+        
+    Returns:
+        None
     """
     plt.figure(figsize=(11, 6), dpi=100)
     plt.plot(np.array(history.history['loss'])/batch_size, 'o-', label='Training Loss')

@@ -1,12 +1,3 @@
-"""
-Implements PointNet.
-
-See https://arxiv.org/pdf/1612.00593.pdf
-
-Adapted from https://keras.io/examples/vision/pointnet/
-
-Authors: Emilio Villasana, Andrew Rice, Raghu Ramanujan, Dylan Sparks
-"""
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras

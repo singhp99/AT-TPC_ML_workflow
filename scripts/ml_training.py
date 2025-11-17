@@ -1,9 +1,3 @@
-"""
-Script to benchmark PointNet implementation.
-
-Author: pranjal
-"""
-
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -22,13 +16,15 @@ import os
 
 
 def hyperparameter_tuning(batch_size_num: int,learning_rate_num: int):
-    """Training with a specific batch_size and learning_rate combination
+    """
+    Training with a specific batch_size and learning_rate combination
 
     Args:
         batch_size_num (int): batch size 
         learning_rate_num (int): learning rate
-    Return:
-        (float): best validation accuracy for the specific combination
+        
+    Returns:
+        float: best validation accuracy for the specific combination
     """
     print(f"\n>>> Training with batch size = {batch_size_num} and learning rate = {learning_rate_num}")
 
@@ -73,10 +69,14 @@ def hyperparameter_tuning(batch_size_num: int,learning_rate_num: int):
 
 
 def run_experiment():
-    """Finding the best batch size and learning rate combination 
+    """
+    Finding the best batch size and learning rate combination 
+    
+    Args:
+        None
 
     Returns:
-        (tuple): best parameters (batch_size, learning_rate)
+        tuple: best parameters (batch_size, learning_rate)
     """
     batch_options = [128,256]
     lr_options = [3e-6,5e-6,6e-6,7.5e-6]
@@ -93,9 +93,13 @@ def run_experiment():
 
 
 def train_best_model():
-    """Training the model with the best parameters 
+    """
+    Training the model with the best parameters 
     
-        Returns:
+    Args:
+        None
+    
+    Returns:
         None
     """
     batch_size_num, learning_rate_num = run_experiment()
@@ -151,9 +155,13 @@ def train_best_model():
 
 
 def load_classfication_model():
-    """Evaluating the performance on the model with best hyperparameters 
+    """
+    Evaluating the performance on the model with best hyperparameters 
+    
+    Args:
+        None
        
-        Returns:
+    Returns:
         None
     """
     tf.keras.backend.clear_session() 

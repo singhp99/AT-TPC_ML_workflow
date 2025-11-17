@@ -16,10 +16,18 @@ Adding uniform noise to the point cloud data in cartesian coordinates
 class UniformNoiseAddition(BaseEstimator,TransformerMixin):
     """
     Adds uniform noise to the point cloud data in cartesian coordinates.
+    
     Parameters
-
-    Return
-    new point cloud with noise and event lengths
+    ----------
+    ratio_noise : (float)
+        Fraction of noise to length of point cloud to be produced
+        
+    Returns
+    ----------
+    new_data: (array)
+        Data with uniform noise added
+    event_lengths: (array)
+        New event lengths accounting for added noise points 
     """
     def __init__(self, ratio_noise: float):
         self.ratio_noise = ratio_noise
@@ -36,7 +44,7 @@ class UniformNoiseAddition(BaseEstimator,TransformerMixin):
             y (None): Defaults to None.
             
         Returns:
-            tuple: Data with noise and new event lengths
+            (tuple): Data with noise and new event lengths
         """
         data,event_lengths = X
         skipped = 0
@@ -69,10 +77,18 @@ Adding AT-TPC like noise in cylindrical coordinates to simulate noise characteri
 """
 class AttpcNoiseAddition(BaseEstimator,TransformerMixin):
     """Adding noise in cylindrical coordinates to simulate AT-TPC noise
+    
     Parameters
-
-    Return
-    new point cloud with noise and event lengths
+    ----------
+    ratio_noise : (float)
+        Fraction of noise to length of point cloud to be produced
+        
+    Returns
+    ----------
+    new_data: (array)
+        Data with AT-TPC noise added
+    event_lengths: (array)
+        New event lengths accounting for added noise points 
     """
     def __init__(self, ratio_noise: float):
         self.ratio_noise = ratio_noise
@@ -89,7 +105,7 @@ class AttpcNoiseAddition(BaseEstimator,TransformerMixin):
             y (None): Defaults to None.
 
         Returns:
-            tuple: Data with noise and new event lengths
+            (tuple): Data with noise and new event lengths
         """
         data,event_lengths = X
         skipped = 0
@@ -127,11 +143,15 @@ Detecting and removing outlier points from the point cloud data
 class OutlierDetection:
     """
     Parameters
+    ----------
     None
-
-    Return
-    (event_data,new_event_lengths) (packed np.arrays): outliers removed packed data
-
+    
+    Returns
+    ----------
+    event_data: (array)
+        Data with outliers removed
+    event_lengths: (array)
+        New event lengths with removal of outiler points
     """
     def __init__(self):
         pass
@@ -147,7 +167,7 @@ class OutlierDetection:
             y (None): Defaults to None.
 
         Returns:
-            tuple: modified data and new event lengths
+            (tuple): modified data and new event lengths
         """
         data,event_lengths = X
         event_data = np.full(data.shape, np.nan)
@@ -178,10 +198,14 @@ Resampling the point cloud data to a fixed number of points per event
 class UpDownScaling(BaseEstimator,TransformerMixin):
     """
     Parameters
-    target_size (int): which is the number of point I want to up/down sample to 
-
-    Return
-    new_data (np.array): up/down sampled data with shape (run_events, target_size,4) 
+    ----------
+    target_size: (int) 
+        The number of points to up/down sample to 
+    
+    Returns
+    ----------
+    new_data: (array)
+        Up/down sampled data with shape (run_events, target_size,4)
     """
     def __init__(self,target_size: int,isotope: str,dimension: int = 4):
         self.target_size = target_size
@@ -200,7 +224,7 @@ class UpDownScaling(BaseEstimator,TransformerMixin):
             y (None): Defaults to None.
 
         Returns:
-            np.array: new data with modified shape
+            (np.array): new data with modified shape
         """
         data,event_lengths = X #with shape (file,event_lenghts) X needs to be the only input to preserve the conventions of custom transformer
         len_run = len(data)
@@ -246,10 +270,13 @@ Reclassifying the labels to start from 0 instead of 1
 class ReclassifyingLabels(BaseEstimator,TransformerMixin):
     """
     Parameters
+    ----------
     None
-
+    
     Return
-    X_copy (np.array): labels recalculated but the same data shape remains same  (run_events, target_size,4) 
+    ----------
+    X_copy: (np.array) 
+        Labels recalculated but the same data shape remains same  (run_events, target_size,4) 
 
     """
     def __init__(self):
@@ -266,7 +293,7 @@ class ReclassifyingLabels(BaseEstimator,TransformerMixin):
             y (None): Defaults to None.
 
         Returns:
-            np.array: reclassified data labels
+            (np.array): reclassified data labels
         """
         X_copy = X.copy() #don't want to change the labels from the oriiginal
         for i in range(len(X_copy)):
@@ -284,10 +311,13 @@ Limiting the data to have balanced classes by downsampling the higher classes to
 class DataLimitation(BaseEstimator,TransformerMixin):
     """
     Parameters
+    ----------
     None
 
     Return
-    limited_data (np.array): all classes are not balanced through limitation
+    ----------
+    limited_data: (np.array)
+        All classes are not balanced through limitation
 
     """
 
@@ -305,7 +335,7 @@ class DataLimitation(BaseEstimator,TransformerMixin):
             y (None): Defaults to None.
 
         Returns:
-            np.array: limited data with balanced classes
+            (np.array): limited data with balanced classes
         """
         labels = X[:,-2,0].astype(int)
         valid_mask = labels < 5
@@ -345,10 +375,14 @@ Data Augumentation through rotation about the azimuthal axis
 class DataAugumentation(BaseEstimator,TransformerMixin):
     """
     Parameters
-    target_size (int): which is the number of point of the second dimension
+    ----------
+    target_size: (int) 
+        Which is the number of point of the second dimension
 
     Return
-    augmented_data (np.array): increased shape of array by the number of augumneted events for class 3 and 4
+    ----------
+    augmented_data: (np.array)
+        Increased shape of array by the number of augmented events for class 3 and 4
 
     """
     def __init__(self,target_size):
@@ -365,7 +399,7 @@ class DataAugumentation(BaseEstimator,TransformerMixin):
             y (None): Defaults to None
 
         Returns:
-            np.array: augmented data array
+            (np.array): augmented data array
         """
         labels = X[:,-2,0].astype(int)
         class_dist = np.array([np.sum(labels==i) for i in range(5)]) #there are 5 labels (0-5) 
@@ -409,10 +443,13 @@ Scaling the point cloud data to a range of (-1,1) for each cartesian coordinate
 class ScalingData(BaseEstimator,TransformerMixin):
     """
     Parameters
+    ----------
     None
 
     Return
-    X (np.array): MinMaxScaler() applied data for all columns
+    ----------
+    X: (np.array) 
+        MinMaxScaler() applied data for all columns
 
     """
     def __init__(self,dimension=4):
@@ -433,7 +470,7 @@ class ScalingData(BaseEstimator,TransformerMixin):
             y (None): Defaults to None
 
         Returns:
-            np.array: data with scaled training features
+            (np.array): data with scaled training features
         """
         n_dict = {0:"x",1:"y",2:"z",3:"charge"}
         for n in range(self.dimension):

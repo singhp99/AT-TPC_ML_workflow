@@ -1,15 +1,54 @@
 site_name: AT-TPC ML Workflow
+site_description: Documentation for the AT-TPC ML workflow 
+site-author: Pranjal Singh
+
 nav:
   - Home: index.md
+  - About: 
+    - AT-TPC: about/about_det.md
+    - PointNet: about/about_pn.md
+  # - User Guide:
   - API Reference:
-    - Inspect: inspect.md
+    - Inspect: api/inspect.md
+    - ML Preprocessing: 
+      - Uniform Noise Addition: api/uniform_noise.md
+      - ATTPC Noise Addition: api/attpc_noise.md
+      - Outlier Detection: api/outlier_detection.md
+      - Up-Down Scaling: api/up-down_scaling.md
+      - Reclassifying Labels: api/reclassifying_labels.md
+      - Data Limitation: api/data_limitation.md
+      - Data Augmentation: api/data_augmentation.md
+      - Scaling Data: api/scaling_data.md
+    - ML Training:
+      - Training Pipeline: api/ml_training.md
+      - PointNet Architecture: api/pointnet.md
+      - Plotting Learning Curve: api/plotting.md
+  # - Contributors:
+
 theme:
   name: material
   palette:
-    scheme: slate 
-    primary: pink
-    accent: default
+    - scheme: default
+      primary: deep purple
+      toggle:
+        icon: material/weather-night 
+        name: Switch to dark mode
+
+    - scheme: slate
+      primary: pink
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    
 
 plugins: 
 - search
 - mkdocstrings
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js  
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js 

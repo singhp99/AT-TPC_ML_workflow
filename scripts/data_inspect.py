@@ -13,10 +13,14 @@ class Inspect:
 
     Parameters
     ----------
-    number_to_viz : int
+    number_to_viz: (int)
         Number of events to visualize.
-    num_tracks : int
+    num_tracks: (int)
         Number of tracks to filter for visualization.
+        
+    Return
+    ----------
+    None
     """
 
     def __init__(self, number_to_viz: int, num_tracks: int):
