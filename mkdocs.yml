@@ -6,6 +6,7 @@ nav:
   - Home: index.md
   - About: 
     - AT-TPC: about/about_det.md
+    - Why ML?: about/why_ml.md
     - PointNet: about/about_pn.md
   # - User Guide:
   - API Reference:
