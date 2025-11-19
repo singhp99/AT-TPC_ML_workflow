@@ -8,7 +8,8 @@ nav:
     - AT-TPC: about/about_det.md
     - Why ML?: about/why_ml.md
     - PointNet: about/about_pn.md
-  # - User Guide:
+  - User Guide:
+    - Environment Setup: setup/environment.md
   - API Reference:
     - Inspect: api/inspect.md
     - ML Preprocessing: 
