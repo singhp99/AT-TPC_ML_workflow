@@ -10,7 +10,8 @@ nav:
     - PointNet: about/about_pn.md
   - User Guide:
     - Environment Setup: setup/environment.md
-    - Files to Change: setup/files_change.md
+    - File to Change (Spyral): setup/file_change_spy.md
+    - File to Change (ML): setup/file_change_ml.md
   - API Reference:
     - Inspect: api/inspect.md
     - ML Preprocessing: 
@@ -26,7 +27,7 @@ nav:
       - Training Pipeline: api/ml_training.md
       - PointNet Architecture: api/pointnet.md
       - Plotting Learning Curve: api/plotting.md
-  # - Contributors:
+  - Contributors: contributors.md
 
 theme:
   name: material
