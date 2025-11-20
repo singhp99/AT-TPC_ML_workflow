@@ -4,7 +4,7 @@ This disables us from using a *convolutional* neural network, as those work best
 
 
 <figure style="display: flex; justify-content: center;">
-    <img src="../imgs/pointnet.png" alt="Config" style="width:80%;"/>
+    <img src="pointnet.png" alt="Config" style="width:80%;"/>
 </figure>
 <figcaption style="text-align: center;">Figure 6: PointNet architecture</figcaption>
 
