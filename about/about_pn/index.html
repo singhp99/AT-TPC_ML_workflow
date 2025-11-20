@@ -1102,7 +1102,7 @@
 <p>As mentioned in the "<a href="../why_ml/">Why ML?</a>" section, though our data looks like an image, it is not exactly set up in a stacked matrix, but rather with each point having the same four properties (x, y, z, charge); this format is referred to as pointclouds. </p>
 <p>This disables us from using a <em>convolutional</em> neural network, as those work best with stacked matrices where different filters (other matrices) are applied for transformation. However, there are specific model architectures, that are neural nets, built for the point cloud format specifically; we have chosen to use one called PointNet. This model was coined by Qi et al. at Stanford University in 2017 (<a href="https://arxiv.org/pdf/1612.00593.pdf">see here for the publication</a>). </p>
 <figure style="display: flex; justify-content: center;">
-    <img src="/imgs/pointnet.png" alt="Config" style="width:80%;"/>
+    <img src="../imgs/pointnet.png" alt="Config" style="width:80%;"/>
 </figure>
 <figcaption style="text-align: center;">Figure 6: PointNet architecture</figcaption>
 
