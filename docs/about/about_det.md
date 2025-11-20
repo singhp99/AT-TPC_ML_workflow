@@ -1,7 +1,7 @@
 In order to be able to inspect the AT-TPC data, it may be helpful to first take a look at what the AT-TPC looks like physically; this will help us understand why certain quantities would be conserved. 
 
 <figure style="text-align: center;">
-    <img src="attpc.jpg" alt="AT-TPC Image" style="width:70%;"/>
+    <img src="../attpc.jpg" alt="AT-TPC Image" style="width:70%;"/>
     <figcaption>Figure 1: A schematic view of the AT-TPC detector</figcaption>
 </figure>
 
