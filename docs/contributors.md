@@ -2,13 +2,13 @@ This work would not be possible without the dedication of other AT-TPC group mem
 
 Below is a list of all [AT-TPC](https://github.com/ATTPC) members that contributed to this project, in no particular order.
 
-- Pranjal Singh - [singhp99]()
+- Pranjal Singh - [singhp99](https://github.com/singhp99)
 - Daniel Bazin - [DBazin](https://github.com/dbazin)
 - Gordon McCann - [gwm17](https://github.com/gwm17)
 - Zach Serikow - [sigmanotation](https://github.com/sigmanotation)
 - Nathan Turi - [turinath](https://github.com/turinath)
 - Till Schaeffeler - [Till-Schaeffeler](https://github.com/Till-Schaeffeler)
-- Daniela Ramierez - [danielaramirez415](https://github.com/danielaramirez415)
+- Daniela Ramirez - [danielaramirez415](https://github.com/danielaramirez415)
 
 Special thanks to the [ALPhA](https://github.com/alpha-davidson) group at Davidson College for their help with the ML resources and PointNet model base.
 
