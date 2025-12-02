@@ -26,7 +26,7 @@ def prep_4_ml(self, group):
     
     event_data = np.full((len(event_lengths), np.max(event_lengths) + 2, 4), np.nan)
     
-    for i, e in tqdm.tqdm(enumerate(group)): #tqdm.tqdm(enumerate(overlapping_keys))
+    for i, e in tqdm.tqdm(enumerate(group)): 
         for n in range(event_lengths[i]):
             event_data[i, n] = group[e][n,:4]
         label = group[e].attrs["tracks"]

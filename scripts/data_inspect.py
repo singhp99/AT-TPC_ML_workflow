@@ -23,7 +23,7 @@ class Inspect:
     None
     """
 
-    def __init__(self, number_to_viz: int, num_tracks: int):
+    def __init__(self, number_to_viz: int | None, num_tracks: int | None):
         """
         Initialize the Inspect object.
 
@@ -64,7 +64,7 @@ class Inspect:
                 return True  # NaNs found
         return False  # No NaNs found
 
-    def add_attr_tracks(self, group, est_path: str):
+    def add_attr_tracks(self, group, file_est: str):
         """
         Add a new attribute 'tracks' to each dataset in the HDF5 group from parquet files.
 
@@ -75,7 +75,6 @@ class Inspect:
         Returns:
             h5py.Group: Modified HDF5 group with new 'tracks' attribute.
         """
-        file_est = pd.read_parquet(est_path, engine="pyarrow")
         grouped = file_est.groupby("event")
         group_sizes = grouped.size()
 

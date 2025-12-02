@@ -1,0 +1,11 @@
+{
+    "spyral_parameters": {
+        "workspace_path": "/Volumes/researchEXT/O16/no_efield/no_field_fitracks_v1.0/",
+        "trace_path": "/Volumes/researchEXT/O16/no_efield/some_traces/",
+        "run_min": 54,
+        "run_max": 170,
+        "n_processes": 4,
+        "phases_to_run":[False, False, True, False]
+    }
+
+}

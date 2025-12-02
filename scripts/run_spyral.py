@@ -27,12 +27,12 @@ from spyral import (
 from pathlib import Path
 import multiprocessing
 
-workspace_path = Path("/Volumes/researchEXT/O16/no_efield/no_field_fitracks_v1.0/")
-trace_path = Path("/Volumes/researchEXT/O16/no_efield/some_traces/")
+workspace_path = Path() #config file
+trace_path = Path() #config file
 
-run_min = 54
-run_max = 54
-n_processes = 1
+run_min = 54 #config file
+run_max = 54 #config file
+n_processes = 1 #config file
 
 pad_params = PadParameters(
     pad_geometry_path=DEFAULT_MAP,
@@ -144,7 +144,7 @@ pipe = Pipeline(
         EstimationPhase(estimate_params, det_params),
         InterpSolverPhase(solver_params, det_params),
     ],
-    [False, False, True, False],
+    [False, False, True, False], #config file
     workspace_path,
     trace_path,
 )
