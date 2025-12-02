@@ -14,6 +14,7 @@ nav:
     - File to Change (ML): setup/file_change_ml.md
   - API Reference:
     - Inspect: api/inspect.md
+    - Data Stripping: api/data_strip_id.md
     - ML Preprocessing: 
       - Uniform Noise Addition: api/uniform_noise.md
       - ATTPC Noise Addition: api/attpc_noise.md

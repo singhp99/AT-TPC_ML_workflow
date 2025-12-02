@@ -48,7 +48,7 @@ class Inspect:
         group = file_h5[group_ls]  # Accessing the group
         return group
 
-    def check_nans(self, group):
+    def check_nans(self, group) -> bool:
         """
         Check for NaN values in each dataset of the HDF5 group.
 
@@ -85,7 +85,7 @@ class Inspect:
                 group[key].attrs["tracks"] = size
         return group
 
-    def viz_cluster(self, group):
+    def viz_cluster(self, group) -> None:
         """
         Visualize clusters in the HDF5 group and save to a PDF.
 
