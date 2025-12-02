@@ -39,7 +39,7 @@ if __name__ == "__main__":
     max_run = 169
     
     for run_number in tqdm(range(min_run, max_run + 1), desc="Processing Runs"):
-        file_path = "data/run_001.h5"
+        file_path = "payh/to/pointcloud/h5/file"
         est_path = "data/run_001_estimates.parquet"
         
         if not file_path.exists():

@@ -3,9 +3,23 @@
         "workspace_path": "/Volumes/researchEXT/O16/no_efield/no_field_fitracks_v1.0/",
         "trace_path": "/Volumes/researchEXT/O16/no_efield/some_traces/",
         "run_min": 54,
-        "run_max": 170,
+        "run_max": 169,
         "n_processes": 4,
-        "phases_to_run":[False, False, True, False]
-    }
+        "phases_to_run":[false, false, true, false]
+    },
 
+    "data_extract_parameters": {
+        "run_min": 54,
+        "run_max": 169,
+        "file_path": "path/to/pointcloud/h5/file",
+        "est_path": "data/run_001_estimates.parquet"
+        
+    },
+
+    "ml_prep_parameters": {
+        "target_size": 800,
+        "isotope": "O16",
+        "run_min": 54,
+        "run_max": 169
+    }
 }
