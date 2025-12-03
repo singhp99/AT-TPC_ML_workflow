@@ -1,5 +1,6 @@
 import dotenv
 dotenv.load_dotenv()
+import json
 
 from spyral import (
     Pipeline,
@@ -27,12 +28,18 @@ from spyral import (
 from pathlib import Path
 import multiprocessing
 
-workspace_path = Path() #config file
-trace_path = Path() #config file
 
-run_min = 54 #config file
-run_max = 54 #config file
-n_processes = 1 #config file
+config_path = Path("../config.json")
+with config_path.open() as config_file:
+    config = json.load(config_file)
+cfg_sp = config["spyral_parameters"]
+
+workspace_path = Path(cfg_sp["workspace_path"]) 
+trace_path = Path(cfg_sp["trace_path"]) 
+
+run_min = cfg_sp["run_min"]
+run_max = cfg_sp["run_max"]
+n_processes = cfg_sp["n_processes"]
 
 pad_params = PadParameters(
     pad_geometry_path=DEFAULT_MAP,
@@ -144,7 +151,7 @@ pipe = Pipeline(
         EstimationPhase(estimate_params, det_params),
         InterpSolverPhase(solver_params, det_params),
     ],
-    [False, False, True, False], #config file
+    cfg_sp["phases_to_run"], 
     workspace_path,
     trace_path,
 )

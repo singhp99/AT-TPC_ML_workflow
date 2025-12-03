@@ -7,6 +7,8 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix, classification_report
 from tensorflow.keras.callbacks import EarlyStopping
 import time
+import json
+from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import seaborn as sns
@@ -15,7 +17,7 @@ import tqdm
 import os
 
 
-def hyperparameter_tuning(batch_size_num: int,learning_rate_num: int):
+def hyperparameter_tuning(batch_size_num: int,learning_rate_num: int, cfg_ml_train) -> float:
     """
     Training with a specific batch_size and learning_rate combination
 
@@ -28,14 +30,14 @@ def hyperparameter_tuning(batch_size_num: int,learning_rate_num: int):
     """
     print(f"\n>>> Training with batch size = {batch_size_num} and learning rate = {learning_rate_num}")
 
-    train_features = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_train_features.npy')
-    train_labels = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_train_labels.npy')
+    train_features = np.load(cfg_ml_train["data_dir"] + "16O_size800_train_features.npy")
+    train_labels = np.load(cfg_ml_train["data_dir"] + "16O_size800_train_labels.npy")
     print("Training data shape:", train_features.shape)
     train_ds = tf.data.Dataset.from_tensor_slices((train_features[:,:,:3], train_labels))
     train_ds = train_ds.batch(batch_size=batch_size_num, drop_remainder=False)
 
-    val_features = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_val_features.npy')
-    val_labels = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_val_labels.npy')
+    val_features = np.load(cfg_ml_train["data_dir"] + "16O_size800_val_features.npy")
+    val_labels = np.load(cfg_ml_train["data_dir"] + "16O_size800_val_labels.npy")
     val_ds = tf.data.Dataset.from_tensor_slices((val_features[:,:,:3], val_labels))
     val_ds = val_ds.batch(batch_size=batch_size_num, drop_remainder=True)
 
@@ -61,14 +63,14 @@ def hyperparameter_tuning(batch_size_num: int,learning_rate_num: int):
     
 
     #checkpointing
-    history = model.fit(train_ds, validation_data=val_ds, epochs=200, callbacks=[early_stopping],verbose=2) #early stopping
+    history = model.fit(train_ds, validation_data=val_ds, epochs=cfg_ml_train["epochs_limit"], callbacks=[early_stopping],verbose=2) #early stopping
 
     best_val_acc = np.max(history.history["val_sparse_categorical_accuracy"])
     print(f"Best val_accuracy={best_val_acc:.4f}")   
     return best_val_acc
 
 
-def run_experiment():
+def run_experiment(cfg_ml_train) -> tuple:
     """
     Finding the best batch size and learning rate combination 
     
@@ -78,12 +80,12 @@ def run_experiment():
     Returns:
         tuple: best parameters (batch_size, learning_rate)
     """
-    batch_options = [128,256]
-    lr_options = [3e-6,5e-6,6e-6,7.5e-6]
+    batch_options = cfg_ml_train["batch_options"]
+    lr_options = cfg_ml_train["lr_options"]
     results = {}
 
     for bs, lr in itertools.product(batch_options,lr_options):
-        val_acc = hyperparameter_tuning(bs,lr)
+        val_acc = hyperparameter_tuning(bs,lr,cfg_ml_train)
         results[(bs,lr)] = val_acc
 
     opt_params = max(results, key=results.get)
@@ -92,7 +94,7 @@ def run_experiment():
     return opt_params
 
 
-def train_best_model():
+def train_best_model(cfg_ml_train) -> None:
     """
     Training the model with the best parameters 
     
@@ -102,17 +104,17 @@ def train_best_model():
     Returns:
         None
     """
-    batch_size_num, learning_rate_num = run_experiment()
+    batch_size_num, learning_rate_num = run_experiment(cfg_ml_train)
     print(f"\n>>> Training with optimised batch size = {batch_size_num} and learning rate = {learning_rate_num}")
 
-    train_features = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_train_features.npy')
-    train_labels = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_train_labels.npy')
+    train_features = np.load(cfg_ml_train["data_dir"] + "16O_size800_train_features.npy")
+    train_labels = np.load(cfg_ml_train["data_dir"] + "16O_size800_train_labels.npy")
     print("Training data shape:", train_features.shape)
     train_ds = tf.data.Dataset.from_tensor_slices((train_features[:,:,:3], train_labels))
     train_ds = train_ds.batch(batch_size=batch_size_num, drop_remainder=False)
 
-    val_features = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_val_features.npy')
-    val_labels = np.load('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_val_labels.npy')
+    val_features = np.load(cfg_ml_train["data_dir"] + "16O_size800_val_features.npy")
+    val_labels = np.load(cfg_ml_train["data_dir"] + "16O_size800_val_labels.npy")
     val_ds = tf.data.Dataset.from_tensor_slices((val_features[:,:,:3], val_labels))
     val_ds = val_ds.batch(batch_size=batch_size_num, drop_remainder=True)
     
@@ -125,7 +127,7 @@ def train_best_model():
     )
 
     best_model_callback = tf.keras.callbacks.ModelCheckpoint(
-    filepath="/mnt/home/singhp19/alpha/PointNet_ATTPC/training/best_model.keras",
+    filepath= cfg_ml_train["best_model_path"],
     monitor="val_sparse_categorical_accuracy",
     mode="max",
     save_best_only=True,
@@ -146,36 +148,36 @@ def train_best_model():
     
 
     #checkpointing
-    history = model.fit(train_ds, validation_data=val_ds, epochs=200, callbacks=[early_stopping,best_model_callback],verbose=2) #early stopping
-    plot_learning_curve(history, '/mnt/home/singhp19/alpha/PointNet_ATTPC/learning-curve.png',batch_size_num,learning_rate_num)
+    history = model.fit(train_ds, validation_data=val_ds, epochs=cfg_ml_train["epochs_limit"], callbacks=[early_stopping,best_model_callback],verbose=2) #early stopping
+    plot_learning_curve(history, cfg_ml_train["learning_curve_path"],batch_size_num,learning_rate_num)
 
     best_epoch = np.argmax(history.history["val_sparse_categorical_accuracy"]) + 1
     best_val_acc = np.max(history.history["val_sparse_categorical_accuracy"])
     print(f"Best model was at epoch {best_epoch} with val_accuracy={best_val_acc:.4f}") 
 
 
-def load_classfication_model():
+def load_classfication_model(cfg_ml_train) -> None:
     """
     Evaluating the performance on the model with best hyperparameters 
     
     Args:
         None
-       
+        
     Returns:
         None
     """
     tf.keras.backend.clear_session() 
-    test_features = np.load("/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_test_features.npy")
+    test_features = np.load(cfg_ml_train["data_dir"] + "16O_size800_test_features.npy")
     test_features = test_features[:,:,:3]
-    test_labels = np.load("/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/16O_size800_test_labels.npy")
+    test_labels = np.load(cfg_ml_train["data_dir"] + "16O_size800_test_labels.npy")
 
     print("Shape of test_features:", test_features.shape)
 
     model = create_pointnet_model(num_points=800, 
                           num_classes=5, 
                           num_dimensions=3, #for changing number of features
-                          is_regression=False,
-                          is_pointwise_prediction=False)
+                          is_regression=False, #no regression
+                          is_pointwise_prediction=False) # we just want classification
     
     model.compile(loss="sparse_categorical_crossentropy",
                   optimizer=keras.optimizers.Adam(learning_rate=5e-06),
@@ -186,7 +188,7 @@ def load_classfication_model():
     print("Untrained model, accuracy: {:5.2f}%".format(100 * accuracy_d))
     print("Unique label values:", np.unique(test_labels))
 
-    model = tf.keras.models.load_model("/mnt/home/singhp19/alpha/PointNet_ATTPC/training/engine_w0_noise/best_model.keras")
+    model = tf.keras.models.load_model(cfg_ml_train["best_model_path"])
     loss, accuracy_d = model.evaluate(test_features,test_labels,verbose=2)
     print("Restored model, accuracy: {:5.2f}%".format(100 * accuracy_d))
     
@@ -219,12 +221,17 @@ def load_classfication_model():
     svm.set_ylabel("True Labels")
     svm.set_xticklabels(class_names)
     svm.set_yticklabels(class_names, rotation=0) 
-    plt.savefig("/mnt/home/singhp19/alpha/PointNet_ATTPC/confusion_matrix.png")
+    plt.savefig(cfg_ml_train["confusion_matrix_path"])
 
 
 if __name__ == '__main__':
     tf.config.list_physical_devices('GPU')
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+    
+    config_path = Path("../config.json")
+    with config_path.open() as config_file:
+        config = json.load(config_file)
+    cfg_ml_train = config["ml_model_parameters"]
 
-    train_best_model()
-    load_classfication_model()
+    train_best_model(cfg_ml_train)
+    load_classfication_model(cfg_ml_train)

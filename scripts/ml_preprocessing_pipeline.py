@@ -3,6 +3,7 @@ import random
 import numpy as np
 import tqdm
 import json
+from pathlib import Path
 import matplotlib.pyplot as plt
 import h5py
 from sklearn.pipeline import Pipeline
@@ -11,9 +12,14 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from ml_preprocessing_steps import OutlierDetection, UpDownScaling, ReclassifyingLabels, DataLimitation, ScalingData
 
+config_path = Path("../config.json")
+with config_path.open() as config_file:
+    config = json.load(config_file)
+cfg_ml_pipe = config["ml_prep_parameters"]
+    
+target_size = cfg_ml_pipe["target_size"]
+isotope = cfg_ml_pipe["isotope"]
 
-target_size = 800
-isotope = "16O"
 pipeline_1 = Pipeline([
     # ("noise", AttpcNoiseAddition(ratio_noise=0.1)),
     ("outlier",OutlierDetection()), #getting rid of the outliers
@@ -29,13 +35,16 @@ pipeline_2 = Pipeline([
 ]) #reclassifying and scaling (w/ concatonated dataset)
 
 """Pipeline 1""" 
-run_num_list = [10] #to look at individual runs
+run_min = cfg_ml_pipe["run_min"]
+run_max = cfg_ml_pipe["run_max"]
+run_num_list = np.arange(run_min, run_max+1)
 sum_data = None
 
-for run_num in range(10,45): #range(10,26)
+for run_num in run_num_list: 
     print(f"Pipeline for Run {run_num}")
-    data =  np.load(f"/mnt/research/attpc/e20020/Pointet_MLclassification/engine_processed/run00{run_num}_data.npy")
-    event_lengths = np.load(f"/mnt/research/attpc/e20020/Pointet_MLclassification/engine_processed/run00{run_num}_evtlen.npy")
+    data =  np.load(cfg_ml_pipe["data"] + f"run00{run_num}_data.npy")
+    event_lengths = np.load(cfg_ml_pipe["event_lengths"] + f"run00{run_num}_evtlen.npy")
+    
     assert data.shape == (event_lengths.size, np.max(event_lengths)+2, 4), f"Array {run_num} has incorrect shape"
     assert len(np.unique(data[:,-1,0])) == event_lengths.size, f"Array Run {run_num} has incorrect event_ids" 
     data_static = pipeline_1.fit_transform((data,event_lengths))
@@ -97,10 +106,10 @@ print(f"Class distribution for test data is {counts_test}")
 
 
 """Saving the sets for training"""
-np.save('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/' + isotope + '_size' + str(target_size)+'_train_features', X_train) #FILE CHANGE
-np.save('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/' + isotope + '_size' + str(target_size)+'_val_features', X_val) #FILE CHANGE
-np.save('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/' + isotope + '_size' + str(target_size)+'_test_features', X_test) #FILE CHANGE
+np.save(cfg_ml_pipe["directory_training"] + isotope + "_size" + str(target_size)+ "_train_features", X_train) #FILE CHANGE
+np.save(cfg_ml_pipe["directory_training"] + isotope + "_size" + str(target_size)+ "_val_features", X_val) #FILE CHANGE
+np.save(cfg_ml_pipe["directory_training"] + isotope + "_size" + str(target_size)+ "_test_features", X_test) #FILE CHANGE
 
-np.save('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/' + isotope + '_size' + str(target_size)+'_train_labels', y_train) #FILE CHANGE
-np.save('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/' + isotope + '_size' + str(target_size)+'_val_labels', y_val) #FILE CHANGE
-np.save('/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/' + isotope + '_size' + str(target_size)+'_test_labels', y_test) #FILE CHANGE
+np.save(cfg_ml_pipe["directory_training"] + isotope + "_size" + str(target_size)+ "_train_labels", y_train) #FILE CHANGE
+np.save(cfg_ml_pipe["directory_training"] + isotope + "_size" + str(target_size)+ "_val_labels", y_val) #FILE CHANGE
+np.save(cfg_ml_pipe["directory_training"] + isotope + "_size" + str(target_size)+ "_test_labels", y_test) #FILE CHANGE

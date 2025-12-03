@@ -4,6 +4,7 @@ from tqdm import tqdm
 import h5py
 import pandas as pd
 from pathlib import Path
+import json
 
 
 def all_runs_prep_4_ml(file_path: str, est_path: str, run_number: int):
@@ -29,18 +30,21 @@ def all_runs_prep_4_ml(file_path: str, est_path: str, run_number: int):
     
     event_lengths, event_data = prep_4_ml(inspect, group_with_tracks)
     
-    #need to save these files temporarily 
+    #need to save these files temporarily ------------------------!!!!!!!!
 
 
 if __name__ == "__main__":
+    config_path = Path("../config.json")
+    with config_path.open() as config_file:
+        config = json.load(config_file)
+    cfg_extract = config["data_extract_parameters"]
     
-    #can read this from a config file later
-    min_run = 54
-    max_run = 169
+    min_run = cfg_extract["run_min"]
+    max_run = cfg_extract["run_max"]
     
     for run_number in tqdm(range(min_run, max_run + 1), desc="Processing Runs"):
-        file_path = "payh/to/pointcloud/h5/file"
-        est_path = "data/run_001_estimates.parquet"
+        file_path = cfg_extract["file_path"]
+        est_path = cfg_extract["est_path"]
         
         if not file_path.exists():
             continue
