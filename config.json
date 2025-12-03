@@ -20,6 +20,20 @@
         "target_size": 800,
         "isotope": "O16",
         "run_min": 54,
-        "run_max": 169
-    }
+        "run_max": 169,
+        "data": "/mnt/research/attpc/e20020/Pointet_MLclassification/engine_processed/",
+        "event_lengths": "/mnt/research/attpc/e20020/Pointet_MLclassification/engine_processed/",
+        "directory_training": "/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/"
+    },
+
+    "ml_model_parameters": {
+        "batch_options": [128, 256],
+        "lr_options": [3e-6,5e-6,6e-6,7.5e-6],
+        "epochs_limit": 200,
+        "data_dir":"/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/",
+        "best_model_path": "/mnt/home/singhp19/alpha/PointNet_ATTPC/training/best_model.keras",
+        "learning_curve_path": "/mnt/home/singhp19/alpha/PointNet_ATTPC/learning-curve.png",
+        "confusion_matrix_path": "/mnt/home/singhp19/alpha/PointNet_ATTPC/confusion_matrix.png"
+        
+    }   
 }
