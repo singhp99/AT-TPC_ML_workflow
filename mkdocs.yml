@@ -10,8 +10,9 @@ nav:
     - PointNet: about/about_pn.md
   - User Guide:
     - Environment Setup: setup/environment.md
-    - File to Change (Spyral): setup/file_change_spy.md
-    - File to Change (ML): setup/file_change_ml.md
+    - Config (Spyral): setup/file_change_spy.md
+    - Config (Data Extraction): setup/file_change_data_extract.md
+    - Config (ML): setup/file_change_ml.md
   - API Reference:
     - Inspect: api/inspect.md
     - Data Stripping: api/data_strip_id.md

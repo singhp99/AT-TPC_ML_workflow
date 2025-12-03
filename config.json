@@ -1,18 +1,18 @@
 {
     "spyral_parameters": {
-        "workspace_path": "/Volumes/researchEXT/O16/no_efield/no_field_fitracks_v1.0/",
-        "trace_path": "/Volumes/researchEXT/O16/no_efield/some_traces/",
+        "workspace_path": "/path/to/your/spyral/workspace/",
+        "trace_path": "/path/to/your/spyral/traces/",
         "run_min": 54,
         "run_max": 169,
         "n_processes": 4,
-        "phases_to_run":[false, false, true, false]
+        "phases_to_run":[true, true, true, false]
     },
 
     "data_extract_parameters": {
         "run_min": 54,
         "run_max": 169,
         "file_path": "path/to/pointcloud/h5/file",
-        "est_path": "data/run_001_estimates.parquet"
+        "est_path": "path/to/est/file"
         
     },
 
@@ -21,19 +21,19 @@
         "isotope": "O16",
         "run_min": 54,
         "run_max": 169,
-        "data": "/mnt/research/attpc/e20020/Pointet_MLclassification/engine_processed/",
-        "event_lengths": "/mnt/research/attpc/e20020/Pointet_MLclassification/engine_processed/",
-        "directory_training": "/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/"
+        "data": "path/to/processed/pointcloud/data/",
+        "event_lengths": "path/to/processed/event/lengths/",
+        "directory_training": "path/to/save/ml/training/data/"
     },
 
     "ml_model_parameters": {
         "batch_options": [128, 256],
         "lr_options": [3e-6,5e-6,6e-6,7.5e-6],
         "epochs_limit": 200,
-        "data_dir":"/mnt/research/attpc/e20020/Pointet_MLclassification/engine_training_data/",
-        "best_model_path": "/mnt/home/singhp19/alpha/PointNet_ATTPC/training/best_model.keras",
-        "learning_curve_path": "/mnt/home/singhp19/alpha/PointNet_ATTPC/learning-curve.png",
-        "confusion_matrix_path": "/mnt/home/singhp19/alpha/PointNet_ATTPC/confusion_matrix.png"
+        "data_dir":"path/to/load/ml/training/data/directory/",
+        "best_model_path": "path/to/save/best/model/best_model.keras",
+        "learning_curve_path": "path/to/save/learning/curve/learning_curve.png",
+        "confusion_matrix_path": "path/to/save/confusion/matrix/confusion_matrix.png"
         
     }   
 }

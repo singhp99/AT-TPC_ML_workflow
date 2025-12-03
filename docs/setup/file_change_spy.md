@@ -1,30 +1,47 @@
-## Spyral: run_spyral.py
+## Configuration
 
-Since the Spyral package is a tool created to work with data from any of the AT-TPC experiments, a user has the ability to refine the experimental parameters to those of their experiment. The file we use to define these parameters is `run_spyral.py`, and these parameters have already been set for the $^{16}\text{O}$, but we do have to change some things. 
+Since the Spyral package is a tool created to work with data from any of the AT-TPC experiments, a user has the ability to refine the experimental parameters to those of their experiment. The file we use to define these parameters is `run_spyral.py`, and these parameters have already been set for the $^{16}\text{O}$, but some user specific parameters are defined in `config.json`. 
 
 One of the first things we will have to change will be some paths defined in
 
-```python
-workspace_path = Path("/Volumes/researchEXT/O16/no_efield/no_field_fitracks_v1.0/")
-trace_path = Path("/Volumes/researchEXT/O16/no_efield/some_traces/")
+```json
+"workspace_path": "/path/to/your/spyral/workspace/",
+"trace_path": "/path/to/your/spyral/traces/",
 ```
 
 Where you will be changing the `workspace_path` to a directory where all the analyzed file will go, and a `trace_path` to the directory where all the raw traces are. 
 
 Next, we can change the runs we want to analyze and hoe many processes will be running in parallel
 
-```python
+```json
 run_min = 54
 run_max = 169
 n_processes = 17
 ```
-These are what the parameters need to be changed to, to analyze all the runs with 17 processes in parallel.
+These are what the parameters need to be changed to, to analyze all the runs with 17 processes in parallel, but the suggested amount is `n_processes = 5` if being used on a personal machine.
 
-Now, we will need to change the paths to all the specific parameters files 
+Finally, the last thing that could be changed by the user is the phases that are run. For the extraction of training labels and features, the list in the `Pipeline()` must be changed to 
 
-Note that the argument `do_garfield_correction=False` in `det_params = DetectorParameters()` is set to `False`, this is the electric field correction and I would suggest leaving it off for this experiment. 
+```json
+[true, true, true, false]
+```
+This corresponds to the `PointcloudPhase()`, `ClusterPhase()`, `EstimationPhase()`, and `InterpSolverPhase()` phases in a consecutive manner. 
+
+If you have made the changes to suit your device, you are ready to begin analyzing the data, simply run 
+
+```bash
+python run_spyral
+```
+
+If you would like, you can stop here and the Spyral analysis run with the intended parameters for this experiment. However, if you would like more control over the specific methods through which each phase is run, some other parameters can be changed in `run_spyral.py` file. 
+
+## Additional Spyral Parameters
+
+Note that the argument `do_garfield_correction=False` in `det_params = DetectorParameters()` is set to `False`, this is the electric field correction and I would suggest leaving it off for this experiment but you have the ability to turn it on. 
 
 There are two types of clustering algorithms that can be used here, currently I suggest using the one it is set to, HDBSCAN, but another clustering method called Triple Cluster can be use, though it is currently not stable. 
+
+Even within the HDBSCAN clustering algorithm you do have the ability to change, if you would like more information about each of the arguments here, you can find ([more information here](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html)).
 
 ```python
 cluster_params = ClusterParameters(
@@ -68,19 +85,4 @@ cluster_params = ClusterParameters(
 )
 ```
 
-You would need to uncomment Tripclust related parameters and comment HDBSCAN ones if you would like to make that switch. 
-
-Finally, the last thing that could be changed by the user is the phases that are run. For the extraction of training labels and features, the list in the `Pipeline()` must be changed to 
-
-```python
-[True, True, True, False],
-```
-
-This will run the first three phases, and our training features come from Phase 1, while the labels from Phase 3. 
-
-When you are ready to begin analyzing the data, simply run 
-
-```bash
-python run_spyral
-```
-
+Please note you would need to uncomment Tripclust related parameters and comment HDBSCAN ones if you would like to make that switch, and pass `None` for the one you choose not to use. 

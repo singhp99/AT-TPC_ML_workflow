@@ -45,10 +45,10 @@ Note that it is important you run this command inside the AT-TPC_ML_workflow fol
 source .venv/bin/activate
 ```
 
-and finally install attpc_spyral and its dependencies with
+and finally install attpc_spyral and its dependencies with a `requirements.txt`, a file that should be part of the GitHub clone. If you inspect this file, all the dependencies can be seen. 
 
 ```bash
-pip install attpc_spyral
+pip install -r requirements.txt
 ```
 
 Congratulations! This installs your virtual environment for the training features and labels extraction. You can close this environment with 
