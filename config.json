@@ -21,9 +21,9 @@
         "isotope": "O16",
         "run_min": 54,
         "run_max": 169,
-        "data": "path/to/processed/pointcloud/data/",
-        "event_lengths": "path/to/processed/event/lengths/",
-        "directory_training": "path/to/save/ml/training/data/"
+        "data": "path/to/processed/pointcloud/data/directory/",
+        "event_lengths": "path/to/processed/event/lengths/directory/",
+        "directory_training": "path/to/save/ml/training/data/directory/"
     },
 
     "ml_model_parameters": {
