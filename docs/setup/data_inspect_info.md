@@ -26,4 +26,5 @@ Now, these are all nice, but sometimes we need to visualize the Pointcloud, and 
 ```python 
 viz_cluster(self, group)
 ```
-This will create a pdf file with 
+This will create a PDF file with the amount of tracks specified by the user (with the `number_to_viz` parameter), events with only a specific number of tracks (using the `num_tracks`). **Note: Ensure to pass `None` for those parameters if this method is not being used.**
+
