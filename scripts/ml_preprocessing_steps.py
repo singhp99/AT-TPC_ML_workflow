@@ -48,7 +48,7 @@ class UniformNoiseAddition(BaseEstimator,TransformerMixin):
         """
         data,event_lengths = X
         skipped = 0
-        for i in range(len(data)): #
+        for i in range(len(data)): 
             data_size = int((self.ratio_noise)*event_lengths[i])
             
             noise_x = np.random.randint(-250,250,(data_size,1))
@@ -183,7 +183,7 @@ class OutlierDetection:
 
             event_data[i,:len(allowed_points)] = allowed_points #only assigns the valid points to the new array
             event_data[i,-2] = data[i,-2] #need to include the labels
-            event_data[i,-1] = data[i,-1] #need to inclde the orinigal index
+            event_data[i,-1] = data[i,-1] #need to include the original index
 
             new_event_lengths[i] = len(allowed_points)  #original event number minus the number of outliers
             tot_count+=event_lengths[i] -new_event_lengths[i]
@@ -295,7 +295,7 @@ class ReclassifyingLabels(BaseEstimator,TransformerMixin):
         Returns:
             (np.array): reclassified data labels
         """
-        X_copy = X.copy() #don't want to change the labels from the oriiginal
+        X_copy = X.copy() #don't want to change the labels from the original
         for i in range(len(X_copy)):
             if X_copy[i,-2,0] == 0:
                 print("Event has 0 tracks")
