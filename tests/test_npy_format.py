@@ -22,6 +22,6 @@ def test_prep_4_ml_hdf5():
         
         lengths, data = prep_4_ml(group)
         
-        assert len(lengths) == len(np.unique(data[:,-1,0])) #to check if event indices match number of events
-        assert len(np.unique(data[:,-2,0])) <= 5 #to check if classes are within 1-5 tracks (will need to be changed for a different experiment)
-        assert data.shape[3] == 4 #to check if last dimension is 4 (x,y,z,charge)
+    assert len(lengths) == len(np.unique(data[:,-1,0])) #to check if event indices match number of events
+    assert len(np.unique(data[:,-2,0])) <= 5 #to check if classes are within 1-5 tracks (will need to be changed for a different experiment)
+    assert data.shape[3] == 4 #to check if last dimension is 4 (x,y,z,charge)
