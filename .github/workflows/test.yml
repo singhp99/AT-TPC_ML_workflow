@@ -26,6 +26,7 @@ jobs:
           pip install numpy
           pip install h5py
           pip install pytest
+          pip install tqdm
 
       - name: Run tests
         env:
