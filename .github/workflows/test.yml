@@ -27,6 +27,7 @@ jobs:
           pip install h5py
           pip install pytest
           pip install tqdm
+          pip install pandas
 
       - name: Run tests
         env:
