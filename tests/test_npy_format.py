@@ -1,4 +1,4 @@
-from ../scripts.data_extract import prep_4_ml
+from scripts.data_extract import prep_4_ml
 import numpy as np
 import h5py 
 
