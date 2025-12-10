@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 
-def prep_4_ml(self, group):
+def prep_4_ml(group):
     """
     Function to strip data of event names, attach labels to data and convert to .npy files
 
