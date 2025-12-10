@@ -1,6 +1,9 @@
 from scripts.data_extract import prep_4_ml
 import numpy as np
 import h5py 
+from tqdm import tqdm
+import pandas as pd
+
 
 #I did learn about in-memeory h5 files from chatgpt 
 
