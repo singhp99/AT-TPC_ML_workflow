@@ -1,6 +1,5 @@
 import numpy as np
 import random
-import numpy as np
 import tqdm
 import json
 import matplotlib.pyplot as plt

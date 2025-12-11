@@ -5,7 +5,7 @@ from tqdm import tqdm
 import pandas as pd
 
 
-#I did learn about in-memeory h5 files from chatgpt 
+#I did learn about in-memory h5 files from chatgpt 
 
 def test_prep_4_ml_hdf5():
     with h5py.File("test_h5.h5", "w", driver="core", backing_store=False) as f:
