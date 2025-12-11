@@ -139,7 +139,7 @@ class AttpcNoiseAddition(BaseEstimator,TransformerMixin):
 """
 Detecting and removing outlier points from the point cloud data
 """
-class OutlierDetection:
+class OutlierDetection(BaseEstimator,TransformerMixin):
     """
     Parameters
     ----------

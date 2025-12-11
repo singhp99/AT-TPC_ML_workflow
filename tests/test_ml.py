@@ -17,7 +17,7 @@ def test_outlier_detection2():
     data = np.array([[[-1000,14,500,1000],[5,6,7,8],[9,10,11,12],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[2,2,2,2],[1,1,1,1]],[[10,20,30,40],[90,10,60,70],[15,600,70,80],[-150,25,2000,450],[-80,15,250,300],[1,1,1,1],[2,2,2,2]],[[15,25,35,45],[95,15,65,75],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[4,4,4,4],[3,3,3,3]]])
     
     event_length = np.array([3,5,2])
-    outlier_detector = OutlierDetection(data)
+    outlier_detector = OutlierDetection()
     outlier_removed, new_event_len = outlier_detector.transform((data, event_length))
     
     assert data.shape != outlier_removed.shape #to check if the shape is different as there are outliers in the data
@@ -28,7 +28,7 @@ def test_outlier_detection2():
     assert new_event_len[2] == 4 #third event should have no outliers removed
     
 def test_up_down_scaling():
-    data = np.array([[[-1000,14,500,1000],[5,6,7,8],[9,10,11,12],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[2,2,2,2],[1,1,1,1]],[[10,20,30,40],[90,10,60,70],[15,600,70,80],[-150,25,2000,450],[-80,15,250,300],[1,1,1,1],[2,2,2,2]],[[15,25,35,45],[95,15,65,75],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[4,4,4,4],[3,3,3,3]]])
+    data = np.array([[[-200,14,500,1000],[5,6,7,8],[9,10,11,12],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[2,2,2,2],[1,1,1,1]],[[10,20,30,40],[90,10,60,70],[15,600,70,80],[-150,25,2000,450],[-80,15,250,300],[1,1,1,1],[2,2,2,2]],[[15,25,35,45],[95,15,65,75],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[np.nan,np.nan,np.nan,np.nan],[4,4,4,4],[3,3,3,3]]])
     event_length = np.array([3,5,2])
     target_size = 5
     isotope = "test_isotope"
@@ -42,7 +42,12 @@ def test_up_down_scaling():
     
 
 def test_scaling_data():
-    data = np.array([[[1,2,3,4],[5,6,7,8],[9,10,11,12],[2,2,2,2],[1,1,1,1]],[[10,20,30,40],[90,10,60,70],[50,60,70,80],[15,25,35,45],[95,15,65,75]],[[4,4,4,4],[3,3,3,3],[2,2,2,2],[1,1,1,1]]])
+    data = np.array([
+        [[1,2,3,4],[5,6,7,8],[9,10,11,12],[2,2,2,2],[0,0,0,0],[2,2,2,2],[0,0,0,0]],
+        [[10,20,30,40],[90,10,60,70],[50,60,70,80],[15,25,35,45],[95,15,65,75],[4,4,4,4],[1,1,1,1]],
+        [[4,4,4,4],[3,3,3,3],[2,2,2,2],[1,1,1,1],[0,0,0,0],[3,3,3,3],[2,2,2,2]]
+    ])
+
     
     scaler = ScalingData()
     scaled_data = scaler.transform(data)
