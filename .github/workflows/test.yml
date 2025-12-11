@@ -28,6 +28,7 @@ jobs:
           pip install pytest
           pip install tqdm
           pip install pandas
+          pip install matplotlib
 
       - name: Run tests
         env:
