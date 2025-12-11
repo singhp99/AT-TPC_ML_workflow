@@ -20,7 +20,7 @@ def test_outlier_detection2():
     outlier_detector = OutlierDetection()
     outlier_removed, new_event_len = outlier_detector.transform((data, event_length))
     
-    assert outlier_removed.shape == data.shap
+    assert outlier_removed.shape == data.shape
     assert np.all(new_event_len <= event_length) #new event lengths should be less than
     
     assert new_event_len[0] == 3  # first and last points removed
@@ -33,7 +33,7 @@ def test_up_down_scaling():
     isotope = "test_isotope"
     
     updown_sampler = UpDownScaling(target_size, isotope)
-    updownsampled_data = updown_sampler.transform(data, event_length)
+    updownsampled_data = updown_sampler.transform((data, event_length))
     
     assert updownsampled_data.shape[0] >= data.shape[0] #number of events should be same or more after up/down sampling
     assert not np.isnan(updownsampled_data[:, :-2,:]).any() #there should be no nans in the data after up/down sampling
