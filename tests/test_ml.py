@@ -34,5 +34,5 @@ def test_up_down_scaling():
     updownsampled_data = updown_sampler.transform((data, event_length))
     
     assert updownsampled_data.shape[0] >= data.shape[0] #number of events should be same or more after up/down sampling
-    assert not np.isnan(updownsampled_data[:, :-2,:]).any() #there should be no nans in the data after up/down sampling
+    assert not np.isnan(updownsampled_data[:, :,:]).any() #there should be no nans in the data after up/down sampling
     
